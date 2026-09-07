@@ -1,5 +1,5 @@
 {
-    "name": "kevinsorensen523/securekit",
+    "name": "kevinsorensen523/buddha-is-my-shelter",
     "description": "Misuse-resistant security toolkit: secure random, Argon2id password hashing, AEAD encryption, input validation, CSRF tokens, rate limiting.",
     "type": "library",
     "license": "MIT",

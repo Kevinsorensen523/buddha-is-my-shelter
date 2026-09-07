@@ -1,7 +1,8 @@
-# securekit (Python)
+# Buddha is My Shelter (Python)
 
-Python port of the securekit security toolkit, mirroring the Go reference
-implementation's behavior and PHC hash / token wire formats where possible.
+Python port of the Buddha is My Shelter security toolkit, mirroring the Go
+reference implementation's behavior and PHC hash / token wire formats
+where possible.
 
 ## Requirements
 
@@ -10,7 +11,7 @@ implementation's behavior and PHC hash / token wire formats where possible.
 ## Install
 
 ```bash
-pip install securekit
+pip install buddha-is-my-shelter
 ```
 
 ## Modules

@@ -94,7 +94,7 @@ flowchart TB
 <summary><strong>Go</strong></summary>
 
 ```bash
-go get github.com/kevinsorensen523/securekit/go@latest
+go get github.com/kevinsorensen523/buddha-is-my-shelter/go@latest
 ```
 
 ```go
@@ -109,7 +109,7 @@ Full docs: [go/README.md](go/README.md)
 <summary><strong>PHP</strong></summary>
 
 ```bash
-composer require kevinsorensen523/securekit
+composer require kevinsorensen523/buddha-is-my-shelter
 ```
 
 ```php
@@ -124,7 +124,7 @@ Full docs: [php/README.md](php/README.md)
 <summary><strong>Python</strong></summary>
 
 ```bash
-pip install securekit
+pip install buddha-is-my-shelter
 ```
 
 ```python
@@ -140,11 +140,11 @@ Full docs: [python/README.md](python/README.md)
 <summary><strong>JavaScript / Node.js</strong></summary>
 
 ```bash
-npm install @kevinsorensen523/securekit
+npm install @kevinsorensen523/buddha-is-my-shelter
 ```
 
 ```js
-const { PasswordHasher } = require('@kevinsorensen523/securekit');
+const { PasswordHasher } = require('@kevinsorensen523/buddha-is-my-shelter');
 const hasher = new PasswordHasher();
 const hash = await hasher.hash('correct horse battery staple');
 ```
@@ -158,7 +158,7 @@ Full docs: [javascript/README.md](javascript/README.md)
 ```xml
 <dependency>
   <groupId>io.github.kevinsorensen523</groupId>
-  <artifactId>securekit</artifactId>
+  <artifactId>buddha-is-my-shelter</artifactId>
   <version>0.1.0</version>
 </dependency>
 ```

@@ -1,4 +1,4 @@
-module github.com/kevinsorensen523/securekit
+module github.com/kevinsorensen523/buddha-is-my-shelter/go
 
 go 1.22
 

@@ -1,7 +1,7 @@
-# securekit (JavaScript / Node.js)
+# Buddha is My Shelter (JavaScript / Node.js)
 
-Node.js port of the securekit security toolkit, mirroring the Go reference
-implementation's behavior.
+Node.js port of the Buddha is My Shelter security toolkit, mirroring the
+Go reference implementation's behavior.
 
 ## Requirements
 
@@ -10,7 +10,7 @@ implementation's behavior.
 ## Install
 
 ```bash
-npm install @kevinsorensen523/securekit
+npm install @kevinsorensen523/buddha-is-my-shelter
 ```
 
 ## Modules
@@ -18,7 +18,7 @@ npm install @kevinsorensen523/securekit
 ### SecureRandom
 
 ```js
-const { secureRandomToken, secureRandomHex, secureRandomBytes } = require('@kevinsorensen523/securekit');
+const { secureRandomToken, secureRandomHex, secureRandomBytes } = require('@kevinsorensen523/buddha-is-my-shelter');
 
 const token = secureRandomToken(32); // URL-safe base64
 const hex = secureRandomHex(16);
@@ -28,7 +28,7 @@ const raw = secureRandomBytes(32);
 ### PasswordHasher (Argon2id, bcrypt fallback)
 
 ```js
-const { PasswordHasher } = require('@kevinsorensen523/securekit');
+const { PasswordHasher } = require('@kevinsorensen523/buddha-is-my-shelter');
 
 const hasher = new PasswordHasher();
 const hash = await hasher.hash('correct horse battery staple');
@@ -47,7 +47,7 @@ language ports.
 ### SymmetricEncryptor (AES-256-GCM AEAD)
 
 ```js
-const { SymmetricEncryptor } = require('@kevinsorensen523/securekit');
+const { SymmetricEncryptor } = require('@kevinsorensen523/buddha-is-my-shelter');
 
 const enc = new SymmetricEncryptor();
 const key = enc.generateKey();
@@ -63,7 +63,7 @@ own. `decrypt()` always throws the generic `DecryptionError`.
 ### Validator
 
 ```js
-const { isValidEmail, isValidUrl, sanitizeFilename, escapeHtml } = require('@kevinsorensen523/securekit');
+const { isValidEmail, isValidUrl, sanitizeFilename, escapeHtml } = require('@kevinsorensen523/buddha-is-my-shelter');
 
 isValidEmail('user@example.com');    // true
 isValidUrl('https://example.com');   // true, rejects non-http(s) schemes
@@ -74,7 +74,7 @@ const safe = escapeHtml('<script>alert(1)</script>');
 ### CsrfTokenManager
 
 ```js
-const { CsrfTokenManager, secureRandomBytes } = require('@kevinsorensen523/securekit');
+const { CsrfTokenManager, secureRandomBytes } = require('@kevinsorensen523/buddha-is-my-shelter');
 
 const secret = secureRandomBytes(32); // store server-side
 const mgr = new CsrfTokenManager(secret, 3600000); // ttl in ms
@@ -86,7 +86,7 @@ const ok = mgr.verify(sessionId, submittedToken);
 ### RateLimiter
 
 ```js
-const { RateLimiter, MemoryRateLimiterStore } = require('@kevinsorensen523/securekit');
+const { RateLimiter, MemoryRateLimiterStore } = require('@kevinsorensen523/buddha-is-my-shelter');
 
 const limiter = new RateLimiter(new MemoryRateLimiterStore(), 100, 60000);
 if (!limiter.allow(clientIp)) {
@@ -102,7 +102,7 @@ if (!limiter.allow(clientIp)) {
 ### constantTimeEqual
 
 ```js
-const { constantTimeEqual } = require('@kevinsorensen523/securekit');
+const { constantTimeEqual } = require('@kevinsorensen523/buddha-is-my-shelter');
 constantTimeEqual(a, b); // wraps crypto.timingSafeEqual
 ```
 
@@ -124,4 +124,4 @@ npm run lint
 - Cryptography is delegated to `argon2`, `bcryptjs`, and Node's built-in
   `crypto` — no custom crypto.
 - This package ships a CommonJS API (`require`); it also works from ESM via
-  Node's CJS interop (`import securekit from '@kevinsorensen523/securekit'`).
+  Node's CJS interop (`import securekit from '@kevinsorensen523/buddha-is-my-shelter'`).

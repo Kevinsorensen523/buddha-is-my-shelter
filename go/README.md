@@ -1,8 +1,8 @@
-# securekit (Go)
+# Buddha is My Shelter (Go)
 
-Reference implementation of the securekit security toolkit. All other
-language ports (PHP, Python, JavaScript, Java) mirror this package's
-behavior and PHC hash / token wire formats.
+Reference implementation of the Buddha is My Shelter security toolkit.
+All other language ports (PHP, Python, JavaScript, Java) mirror this
+package's behavior and PHC hash / token wire formats.
 
 ## Requirements
 
@@ -11,13 +11,13 @@ behavior and PHC hash / token wire formats.
 ## Install
 
 ```bash
-go get github.com/kevinsorensen523/securekit/go@latest
+go get github.com/kevinsorensen523/buddha-is-my-shelter/go@latest
 ```
 
 Then import as:
 
 ```go
-import securekit "github.com/kevinsorensen523/securekit/go"
+import securekit "github.com/kevinsorensen523/buddha-is-my-shelter/go"
 ```
 
 ## Modules

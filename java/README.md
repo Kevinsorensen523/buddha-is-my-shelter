@@ -1,7 +1,7 @@
-# securekit (Java)
+# Buddha is My Shelter (Java)
 
-Java port of the securekit security toolkit, mirroring the Go reference
-implementation's behavior and PHC hash / token wire formats.
+Java port of the Buddha is My Shelter security toolkit, mirroring the Go
+reference implementation's behavior and PHC hash / token wire formats.
 
 ## Requirements
 
@@ -13,7 +13,7 @@ implementation's behavior and PHC hash / token wire formats.
 ```xml
 <dependency>
   <groupId>io.github.kevinsorensen523</groupId>
-  <artifactId>securekit</artifactId>
+  <artifactId>buddha-is-my-shelter</artifactId>
   <version>0.1.0</version>
 </dependency>
 ```
@@ -21,7 +21,7 @@ implementation's behavior and PHC hash / token wire formats.
 Gradle:
 
 ```groovy
-implementation 'io.github.kevinsorensen523:securekit:0.1.0'
+implementation 'io.github.kevinsorensen523:buddha-is-my-shelter:0.1.0'
 ```
 
 ## Modules

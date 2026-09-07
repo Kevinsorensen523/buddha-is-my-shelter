@@ -1,7 +1,7 @@
-# securekit (PHP)
+# Buddha is My Shelter (PHP)
 
-PHP port of the securekit security toolkit, mirroring the Go reference
-implementation's behavior and PHC hash / token wire formats.
+PHP port of the Buddha is My Shelter security toolkit, mirroring the Go
+reference implementation's behavior and PHC hash / token wire formats.
 
 ## Requirements
 
@@ -11,7 +11,7 @@ implementation's behavior and PHC hash / token wire formats.
 ## Install
 
 ```bash
-composer require kevinsorensen523/securekit
+composer require kevinsorensen523/buddha-is-my-shelter
 ```
 
 ## Modules

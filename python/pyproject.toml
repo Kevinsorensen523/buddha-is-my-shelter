@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "securekit"
+name = "buddha-is-my-shelter"
 version = "0.1.0"
 description = "Misuse-resistant security toolkit: secure random, Argon2id password hashing, AEAD encryption, input validation, CSRF tokens, rate limiting."
 readme = "README.md"
