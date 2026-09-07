@@ -1,25 +1,30 @@
-# securekit
+<p align="center">
+  <img src="assets/buddha.jpg" alt="Buddha meditating under the Bodhi tree" width="220">
+</p>
 
-[![CI](https://github.com/kevinsorensen523/securekit/actions/workflows/ci.yml/badge.svg)](https://github.com/kevinsorensen523/securekit/actions/workflows/ci.yml)
+<h1 align="center">Buddha is My Shelter</h1>
+<p align="center"><em>a misuse-resistant security toolkit, previously known as securekit</em></p>
+
+[![CI](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/ci.yml/badge.svg)](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A misuse-resistant security toolkit for application developers, implemented
 with **feature parity across five languages**: Go (reference), PHP, Python,
 JavaScript/Node.js, and Java.
 
-securekit wraps OWASP best practices into APIs that are **secure by default**
-and **hard to use wrong** — no nonce parameters to get right, no manual
-constant-time comparisons to forget, no cost factors to guess. Every
-cryptographic primitive is delegated to a vetted, audited library per
-language (see the table below). **securekit never implements its own
-cryptography.**
+Buddha is My Shelter wraps OWASP best practices into APIs that are
+**secure by default** and **hard to use wrong** — no nonce parameters to get
+right, no manual constant-time comparisons to forget, no cost factors to
+guess. Every cryptographic primitive is delegated to a vetted, audited
+library per language (see the table below). **This toolkit never implements
+its own cryptography.**
 
 ## Why
 
 Most security bugs in application code aren't cryptographic breaks — they're
 misuse: reused nonces, `==` comparisons on secrets, `Math.random()` used for
-tokens, leaky error messages that turn decryption into an oracle. securekit's
-API surface is designed so those mistakes are difficult to make.
+tokens, leaky error messages that turn decryption into an oracle. This
+toolkit's API surface is designed so those mistakes are difficult to make.
 
 ## Feature Matrix
 
@@ -169,7 +174,7 @@ Full docs: [java/README.md](java/README.md)
 ## Repository Layout
 
 ```
-securekit/
+buddha-is-my-shelter/
 ├── go/            reference implementation (go.mod)
 ├── php/           (composer.json)
 ├── python/        (pyproject.toml)
