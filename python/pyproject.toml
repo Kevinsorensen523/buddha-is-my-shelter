@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "securekit"
+version = "0.1.0"
+description = "Misuse-resistant security toolkit: secure random, Argon2id password hashing, AEAD encryption, input validation, CSRF tokens, rate limiting."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "argon2-cffi>=23.1.0",
+    "cryptography>=42.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "bandit>=1.7.8",
+]
+
+[tool.setuptools.packages.find]
+include = ["securekit*"]

@@ -1,0 +1,28 @@
+{
+  "name": "@kevinsorensen523/securekit",
+  "version": "0.1.0",
+  "description": "Misuse-resistant security toolkit: secure random, Argon2id password hashing, AEAD encryption, input validation, CSRF tokens, rate limiting.",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "argon2": "^0.41.1",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-security": "^3.0.1"
+  }
+}

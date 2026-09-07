@@ -1,0 +1,30 @@
+# Go
+go/*.test
+go/coverage.out
+
+# PHP
+php/vendor/
+php/composer.lock
+php/.phpunit.result.cache
+
+# Python
+python/.venv/
+python/__pycache__/
+python/**/__pycache__/
+python/*.egg-info/
+python/.pytest_cache/
+python/build/
+python/dist/
+
+# JavaScript
+javascript/node_modules/
+javascript/coverage/
+
+# Java
+java/target/
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
