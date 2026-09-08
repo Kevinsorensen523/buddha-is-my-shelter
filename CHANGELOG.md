@@ -43,6 +43,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   since they're decoupled from the registry package name in every ecosystem
   except Go.
 
+### Added (PHP framework coverage)
+
+- `examples/php/Psr15MiddlewareExample.php` -- generic PSR-15 middleware,
+  covering CakePHP 4+, Slim, Laminas/Mezzio, Yii3, and every other
+  actively-maintained framework that implements or bridges to PSR-15.
+- `examples/php/SymfonyEventSubscriberExample.php` -- idiomatic Symfony
+  kernel event subscriber (Symfony also works via the generic PSR-15
+  example if preferred).
+- `examples/php/CodeIgniter4FilterExample.php` -- CodeIgniter 4's own
+  Filter interface, which predates PSR-15 in its core.
+- `examples/php/FRAMEWORKS.md` -- sorted, searchable compatibility index
+  covering ~80 PHP frameworks (from a user-supplied list), mapping each
+  actively-maintained one to the right example and explaining why testing
+  tools, non-framework libraries, and ~30 discontinued/unverifiable
+  projects don't get one (rather than guessing at APIs that can't be
+  confirmed to still exist).
+
+### Added (browser/Next.js support)
+
+- `@kevinsorensen523/buddha-is-my-shelter/browser` subpath export --
+  Web-Crypto-based `SecureRandom`, pure-JS `ConstantTimeCompare`, and the
+  already-portable `Validator` functions, for use in React/Next.js Client
+  Components, Next.js Edge Runtime, or any other non-Node.js JS
+  environment. Verified by actually bundling it with esbuild
+  `--platform=browser` and confirming zero Node built-ins leak in.
+  `PasswordHasher`, `SymmetricEncryptor`, `CsrfTokenManager`,
+  `RateLimiter`, `VersionedEncryptor`, and the SSRF guard remain
+  deliberately Node-only -- not just a technical limitation, but because
+  they should never run client-side (see the JS README's new "Browser &
+  Next.js Usage" section). `examples/js/nextjsExample.md` shows the
+  correct client/server split.
+
+### Fixed (framework examples)
+
+- **`examples/php/LaravelMiddlewareExample.php`**: the middleware
+  constructed `RateLimiter`/`CsrfTokenManager` in its own constructor,
+  which Laravel resolves fresh per request unless bound as a singleton --
+  meaning the rate limiter's counters reset every request and silently
+  blocked nothing, ever. Fixed by moving construction into a service
+  provider's singleton bindings, with fail-fast validation of the CSRF
+  secret at boot.
+- **`examples/go/main.go`**: keyed the rate limiter on `r.RemoteAddr`,
+  which includes the ephemeral TCP port -- a new connection from the same
+  client gets a new port and therefore a new rate-limit key, defeating the
+  limiter almost entirely. Fixed to strip the port via
+  `net.SplitHostPort`. Also fixed a stale import path left over from the
+  securekit → buddha-is-my-shelter rename.
+- All five framework examples now: exempt a configurable list of paths
+  from CSRF checking (third-party webhooks and bearer-token APIs can never
+  supply a session-bound CSRF token), and carry an explicit comment at
+  the point where client IP is read, warning that behind a reverse
+  proxy/load balancer this returns the proxy's address unless the
+  framework is told which hop(s) to trust.
+- Added `examples/README.md` consolidating these lessons (stateful-manager
+  lifecycle, reverse-proxy trust, per-process state limits -- PHP-FPM
+  especially) as guidance that applies across all five languages, linked
+  from every per-language README.
+
+### Added (security credibility)
+
+- `.github/workflows/scorecard.yml` — weekly OpenSSF Scorecard analysis,
+  published to the public Scorecard API and as a README badge.
+- `.github/workflows/codeql.yml` — CodeQL SAST for Go, JavaScript, Java,
+  and Python (CodeQL has no PHP support).
+- `go/fuzz_test.go` — native Go fuzz tests for the email/filename/CSRF/AEAD
+  parsers, verified clean over millions of executions; wired into a
+  nightly `.github/workflows/fuzz.yml` job. Fuzzing for the other four
+  languages, and OSS-Fuzz/ClusterFuzzLite submission, tracked in
+  ROADMAP.md as it requires more setup (and, for OSS-Fuzz, external
+  review).
+
 ### Added (publishing)
 
 - `.github/workflows/publish.yml` — automated PyPI and npm publish on

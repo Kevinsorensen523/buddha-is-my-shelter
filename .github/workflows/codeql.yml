@@ -1,0 +1,59 @@
+name: CodeQL
+
+# Covers Go, JavaScript, Java, and Python. PHP is intentionally absent --
+# CodeQL does not support PHP analysis (see php-review's phpstan job in
+# ci.yml for that language's static analysis instead).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '20 3 * * 2'  # weekly, Tuesday 03:20 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: go
+            build-mode: autobuild
+            working-dir: go
+          - language: javascript-typescript
+            build-mode: none
+            working-dir: javascript
+          - language: java-kotlin
+            build-mode: autobuild
+            working-dir: java
+          - language: python
+            build-mode: none
+            working-dir: python
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          source-root: ${{ matrix.working-dir }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: '/language:${{ matrix.language }}'

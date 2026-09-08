@@ -1,0 +1,38 @@
+name: Fuzz
+
+# Native Go fuzz testing. Runs on a schedule and manually, not on every PR,
+# since fuzzing is deliberately slow (that's the point) rather than a fast
+# CI gate. Extending this to Python (Atheris), Java (Jazzer), and JS is
+# tracked in ROADMAP.md; submitting to OSS-Fuzz/ClusterFuzzLite for
+# continuous, larger-scale fuzzing beyond CI minutes is tracked there too.
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # nightly, 04:00 UTC
+  workflow_dispatch:
+
+jobs:
+  fuzz-go:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
+    strategy:
+      matrix:
+        target:
+          - FuzzValidateEmail
+          - FuzzSanitizeFilename
+          - FuzzCsrfVerify
+          - FuzzSymmetricDecrypt
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - run: go test -fuzz="^${{ matrix.target }}\$" -fuzztime=3m -run "^$" .
+      - name: Upload crash corpus (if any)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-crash-${{ matrix.target }}
+          path: go/testdata/fuzz/

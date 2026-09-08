@@ -139,8 +139,16 @@ ConstantTime::equals($a, $b); // wraps hash_equals()
 
 ## Framework Integration
 
-See [../examples/php](../examples/php) for a Laravel/Symfony-style example
-wiring `CsrfTokenManager` and `RateLimiter` into HTTP middleware.
+See [../examples/php](../examples/php) for dedicated Laravel,
+Symfony, and CodeIgniter 4 examples, plus a generic PSR-15 middleware
+example that covers most other actively-maintained frameworks (Slim,
+CakePHP 4+, Laminas/Mezzio, and more). **See
+[../examples/php/FRAMEWORKS.md](../examples/php/FRAMEWORKS.md)** for a
+sorted, searchable index of ~80 PHP frameworks mapped to the right
+example. **Read [../examples/README.md](../examples/README.md) first** --
+these examples have framework-lifecycle and reverse-proxy gotchas that
+aren't obvious from the code alone (one of them was a real bug in an
+earlier version of the Laravel example).
 
 ## Testing
 

@@ -24,6 +24,22 @@ incrementally across sessions. Status legend: ✅ done · 🚧 in progress ·
   the equivalents elsewhere where the language allows it) should accept
   `char[]`/mutable byte buffers, not just immutable `String`, so callers
   can zero the password from memory after use.
+- ✅ **OpenSSF Scorecard** (`.github/workflows/scorecard.yml`) — weekly
+  automated scoring of repo security practices, results published to the
+  public Scorecard API and as a README badge.
+- ✅ **CodeQL** (`.github/workflows/codeql.yml`) — SAST across Go,
+  JavaScript, Java, and Python (CodeQL has no PHP support; PHPStan already
+  covers that language in `ci.yml`).
+- 🚧 **Fuzz testing** — Go has real native fuzz tests
+  (`go/fuzz_test.go`: email/filename/CSRF/AEAD parsers), verified to run
+  clean for millions of executions, wired into a nightly CI job
+  (`.github/workflows/fuzz.yml`). 📋 Python (Atheris), Java (Jazzer), and
+  JS fuzzing are not set up yet. 📋 Submitting to OSS-Fuzz or
+  ClusterFuzzLite for continuous, large-scale fuzzing beyond what CI
+  minutes allow requires an actual PR to google/oss-fuzz (or a
+  self-hosted ClusterFuzzLite setup) and, for OSS-Fuzz, Google's review —
+  not something addable unilaterally; ping when ready to pursue this and
+  I'll draft the harness + submission PR.
 - 📋 **Statistical constant-time proof** — a dudect-style timing harness
   that actually measures `ConstantTimeCompare` across many samples, rather
   than relying on "the stdlib function is documented as constant-time."

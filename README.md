@@ -6,6 +6,8 @@
 <p align="center"><em>a misuse-resistant security toolkit, previously known as securekit</em></p>
 
 [![CI](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/ci.yml/badge.svg)](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/codeql.yml/badge.svg)](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/kevinsorensen523/buddha-is-my-shelter/badge)](https://scorecard.dev/viewer/?uri=github.com/kevinsorensen523/buddha-is-my-shelter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A misuse-resistant security toolkit for application developers, implemented

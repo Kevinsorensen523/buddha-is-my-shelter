@@ -133,10 +133,58 @@ const { constantTimeEqual } = require('@kevinsorensen523/buddha-is-my-shelter');
 constantTimeEqual(a, b); // wraps crypto.timingSafeEqual
 ```
 
+## Browser & Next.js Usage
+
+**The main package export (`require('@kevinsorensen523/buddha-is-my-shelter')`)
+is Node.js-only.** It uses Node's `crypto`/`dns` built-ins and the `argon2`
+native addon (a compiled binary, not JS) -- none of which a browser bundler
+(webpack, Vite, Turbopack) can resolve, and none of which exist in
+**Next.js's Edge Runtime** (middleware, `export const runtime = 'edge'`
+routes), which runs in a restricted V8 isolate without full Node APIs or
+native addons.
+
+| Where you're running | Use |
+|---|---|
+| Plain Node.js backend (Express, Fastify, ...) | Main export -- works fully |
+| Next.js API routes / Server Components / Server Actions, **Node.js runtime** (the default) | Main export -- works fully |
+| Next.js **Edge Runtime** (middleware, `runtime: 'edge'`) | `/browser` export only (see below) -- the main export will fail to load |
+| React/Next.js **Client Components**, or any browser bundle | `/browser` export only |
+
+### The browser-safe subset
+
+```js
+import { secureRandomToken, isValidEmail, escapeHtml, constantTimeEqual }
+  from '@kevinsorensen523/buddha-is-my-shelter/browser';
+```
+
+This subpath re-implements `SecureRandom` using the Web Crypto API
+(`globalThis.crypto.getRandomValues`, available in every modern browser and
+Node 19+) and `ConstantTimeCompare` in pure JS -- zero Node built-ins,
+verified by actually bundling it with esbuild's `--platform=browser` (which
+refuses to resolve Node built-ins) and confirming the output is clean.
+`Validator`'s functions are also re-exported here since they were already
+pure JS with no Node dependency.
+
+**Deliberately not included, and this isn't just a bundler limitation --
+these should never run client-side at all, even if it were technically
+possible:** `PasswordHasher`, `SymmetricEncryptor`, `CsrfTokenManager`,
+`RateLimiter`, `VersionedEncryptor`, and the SSRF guard. Password hashing
+needs a value compared server-side that must never reach the browser;
+encryption needs a key the browser must never hold; a CSRF token is only
+meaningful when verified server-side against a server-held secret; and
+rate limiting enforced only in client JS is trivially bypassed by anyone
+who opens devtools and calls your API directly. If you need one of these
+in a Next.js Edge Runtime route specifically, move that logic to a
+Node.js-runtime API route instead -- Edge Runtime isn't the right place
+for it regardless of this library.
+
 ## Framework Integration
 
 See [../examples/js](../examples/js) for an Express.js example wiring
-`CsrfTokenManager` and `RateLimiter` into middleware.
+`CsrfTokenManager` and `RateLimiter` into middleware. **Read
+[../examples/README.md](../examples/README.md) first** -- covers real
+deployment gotchas (PM2 cluster/multi-instance state, reverse-proxy trust)
+this example is subject to.
 
 ## Testing
 

@@ -121,6 +121,14 @@ caller-supplied URL. See the doc comment for the DNS-rebinding caveat.
 securekit.ConstantTimeEqualString(a, b) // resists timing attacks
 ```
 
+## Framework Integration
+
+See [../examples/go](../examples/go) for a `net/http` example wiring
+`CsrfTokenManager` and `RateLimiter` into middleware. **Read
+[../examples/README.md](../examples/README.md) first** -- covers real
+deployment gotchas (multi-instance state, reverse-proxy trust) that apply
+across all five languages' examples.
+
 ## Testing
 
 ```bash

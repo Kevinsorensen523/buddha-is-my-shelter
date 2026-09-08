@@ -132,6 +132,9 @@ constant_time_equal(a, b)  # wraps hmac.compare_digest
 ## Framework Integration
 
 See [../examples/python](../examples/python) for Flask and Django examples.
+**Read [../examples/README.md](../examples/README.md) first** -- covers
+real deployment gotchas (multi-worker state, reverse-proxy trust) these
+examples are subject to.
 
 ## Testing
 

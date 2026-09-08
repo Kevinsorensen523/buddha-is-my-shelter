@@ -147,6 +147,9 @@ ConstantTime.equals(a, b); // wraps MessageDigest.isEqual
 
 See [../examples/java](../examples/java) for a Spring Boot filter example
 wiring `CsrfTokenManager` and `RateLimiter` into the request pipeline.
+**Read [../examples/README.md](../examples/README.md) first** -- covers
+real deployment gotchas (multi-instance state, reverse-proxy trust) these
+examples are subject to.
 
 ## Testing
 

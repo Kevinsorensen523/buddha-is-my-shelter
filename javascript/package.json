@@ -5,6 +5,17 @@
   "type": "commonjs",
   "main": "src/index.js",
   "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./browser": {
+      "types": "./src/browser/index.d.ts",
+      "browser": "./src/browser/index.js",
+      "default": "./src/browser/index.js"
+    }
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
