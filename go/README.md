@@ -123,8 +123,11 @@ securekit.ConstantTimeEqualString(a, b) // resists timing attacks
 
 ## Framework Integration
 
-See [../examples/go](../examples/go) for a `net/http` example wiring
-`CsrfTokenManager` and `RateLimiter` into middleware. **Read
+See [../examples/go](../examples/go) for dedicated `net/http`,
+Gin, Echo, and Fiber examples. **See
+[../examples/go/FRAMEWORKS.md](../examples/go/FRAMEWORKS.md)** for Chi
+(reuses the `net/http` example directly -- no changes needed), Beego,
+Goravel, Go Kit, and GoFR. **Read
 [../examples/README.md](../examples/README.md) first** -- covers real
 deployment gotchas (multi-instance state, reverse-proxy trust) that apply
 across all five languages' examples.

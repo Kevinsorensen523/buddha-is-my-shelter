@@ -43,6 +43,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   since they're decoupled from the registry package name in every ecosystem
   except Go.
 
+### Added (Go framework coverage)
+
+- `examples/go/ginExample.go`, `examples/go/echoExample.go`,
+  `examples/go/fiberExample.go` -- alongside the existing `net/http`
+  example. `examples/go/FRAMEWORKS.md` notes Chi needs no dedicated
+  example (100% `net/http`-compatible middleware signature by design);
+  covers Beego, Goravel, and GoFR's own middleware registration APIs; and
+  clarifies Go Kit is a toolkit (endpoint middleware below the HTTP
+  transport layer), not an HTTP framework in the same sense as the others.
+
 ### Added (Java framework coverage)
 
 - `examples/java/MicronautFilterExample.java` -- Micronaut's reactive

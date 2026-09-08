@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">Buddha is My Shelter</h1>
-<p align="center"><em>a misuse-resistant security toolkit, previously known as securekit</em></p>
+<p align="center"><em>Security you can take refuge in.</em></p>
 
 [![CI](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/ci.yml/badge.svg)](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/codeql.yml/badge.svg)](https://github.com/kevinsorensen523/buddha-is-my-shelter/actions/workflows/codeql.yml)
