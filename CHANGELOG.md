@@ -43,6 +43,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   since they're decoupled from the registry package name in every ecosystem
   except Go.
 
+### Added (Python framework coverage)
+
+- `examples/python/django_example.py`, `examples/python/fastapi_example.py`
+  -- alongside the existing Flask example. Both actually imported and
+  instantiated against the real installed Django/FastAPI packages (not
+  just syntax-checked), catching real API mistakes the way the Go
+  framework examples' compile-check did. `examples/python/FRAMEWORKS.md`
+  covers Pyramid, Tornado, Masonite, and Bottle, and explains why ML/GUI/
+  testing/scraping libraries (PyTorch, Tkinter, Pytest, Scrapy, Selenium,
+  Streamlit, etc.) don't get an integration example -- none of them have
+  an HTTP request/response pipeline to hook into.
+
 ### Fixed (Go framework examples)
 
 - `examples/go/main.go`, `ginExample.go`, `echoExample.go`, and

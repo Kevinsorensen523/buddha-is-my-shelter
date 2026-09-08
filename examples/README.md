@@ -1,5 +1,7 @@
 # Framework Integration Examples — Read This First
 
+**Python has its own compatibility index too**: [python/FRAMEWORKS.md](python/FRAMEWORKS.md) -- Flask, Django, and FastAPI get dedicated examples (Django and FastAPI actually imported and instantiated against the real installed packages, not just syntax-checked); Pyramid/Tornado/Masonite/Bottle are noted with their own hook mechanism; ML, GUI, testing, and scraping libraries are marked not applicable since none of them have an HTTP request pipeline.
+
 **Go has its own compatibility index too**: [go/FRAMEWORKS.md](go/FRAMEWORKS.md) -- Chi reuses the plain `net/http` example directly (100% compatible middleware signature); Gin, Echo, and Fiber get dedicated examples since each has its own middleware/context API (Fiber especially, since it runs on `fasthttp` rather than `net/http`); Go Kit is noted as a toolkit rather than an HTTP framework.
 
 **Java has its own compatibility index too**: [java/FRAMEWORKS.md](java/FRAMEWORKS.md) -- Spring Boot's example already implements the standard `jakarta.servlet.Filter` interface, so it works unmodified on any Jakarta EE server; Micronaut gets a dedicated example since it's reactive and skips the Servlet API entirely; Hibernate/MyBatis are noted as not applicable (ORM libraries, no request pipeline).

@@ -131,9 +131,14 @@ constant_time_equal(a, b)  # wraps hmac.compare_digest
 
 ## Framework Integration
 
-See [../examples/python](../examples/python) for Flask and Django examples.
-**Read [../examples/README.md](../examples/README.md) first** -- covers
-real deployment gotchas (multi-worker state, reverse-proxy trust) these
+See [../examples/python](../examples/python) for dedicated Flask,
+Django, and FastAPI examples. **See
+[../examples/python/FRAMEWORKS.md](../examples/python/FRAMEWORKS.md)**
+for Pyramid, Tornado, Masonite, and Bottle, and for why ML/GUI/testing/
+scraping libraries (PyTorch, Tkinter, Pytest, Scrapy, etc.) don't get an
+integration example at all. **Read
+[../examples/README.md](../examples/README.md) first** -- covers real
+deployment gotchas (multi-worker state, reverse-proxy trust) these
 examples are subject to.
 
 ## Testing
