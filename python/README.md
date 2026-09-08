@@ -69,6 +69,33 @@ name = sanitize_filename("report.pdf")  # raises ValueError on traversal
 safe = escape_html('<script>alert(1)</script>')
 ```
 
+### VersionedEncryptor (key rotation)
+
+```python
+from securekit import VersionedEncryptor
+
+ve = VersionedEncryptor({1: key_v1}, current_key_id=1)
+blob = ve.encrypt(b"secret")
+
+# later, after rotating in a new key:
+ve.add_key(2, key_v2)
+ve.set_current_key_id(2)  # new encryptions use key_v2; old ciphertexts (key_id=1) still decrypt
+plaintext = ve.decrypt(blob)
+```
+
+### SSRF guard
+
+```python
+from securekit import is_public_http_url
+
+is_public_http_url("https://example.com")    # True
+is_public_http_url("http://169.254.169.254/")  # False: resolves to link-local
+```
+
+Performs a real DNS lookup — use `is_valid_url()` first for cheap
+structural checks, and this only right before making a server-side request
+to a caller-supplied URL. See the docstring for the DNS-rebinding caveat.
+
 ### CsrfTokenManager
 
 ```python

@@ -48,3 +48,14 @@ export class RateLimiter {
 }
 
 export function constantTimeEqual(a: string | Buffer, b: string | Buffer): boolean;
+
+export function isPrivateOrReservedIp(ip: string): boolean;
+export function isPublicHttpUrl(url: string): Promise<boolean>;
+
+export class VersionedEncryptor {
+  constructor(keys: Map<number, Buffer> | Record<number, Buffer>, currentKeyId: number);
+  addKey(id: number, key: Buffer): void;
+  setCurrentKeyId(id: number): void;
+  encrypt(plaintext: Buffer, aad?: Buffer): Buffer;
+  decrypt(blob: Buffer, aad?: Buffer): Buffer;
+}

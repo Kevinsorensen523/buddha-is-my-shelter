@@ -92,6 +92,29 @@ if !limiter.Allow(clientIP) {
 implement `RateLimiterStore` against Redis or similar shared storage (see
 [../THREAT_MODEL.md](../THREAT_MODEL.md)).
 
+### VersionedEncryptor (key rotation)
+
+```go
+ve, err := securekit.NewVersionedEncryptor(map[uint8][]byte{1: keyV1}, 1)
+blob, err := ve.Encrypt([]byte("secret"), nil)
+
+// later, after rotating in a new key:
+ve.AddKey(2, keyV2)
+ve.SetCurrentKeyID(2) // new encryptions use keyV2; old ciphertexts (keyId=1) still decrypt
+plaintext, err := ve.Decrypt(blob, nil)
+```
+
+### SSRF guard
+
+```go
+securekit.IsPublicHTTPURL("https://example.com") // true
+securekit.IsPublicHTTPURL("http://169.254.169.254/") // false: resolves to link-local
+```
+
+Performs a real DNS lookup — use `ValidateURL` first for cheap structural
+checks, and this only right before making a server-side request to a
+caller-supplied URL. See the doc comment for the DNS-rebinding caveat.
+
 ### ConstantTimeEqual
 
 ```go

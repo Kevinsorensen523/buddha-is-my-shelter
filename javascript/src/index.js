@@ -8,4 +8,6 @@ module.exports = {
   ...require('./csrfTokenManager'),
   ...require('./rateLimiter'),
   ...require('./constantTime'),
+  ...require('./ssrf'),
+  ...require('./versionedEncryptor'),
 };

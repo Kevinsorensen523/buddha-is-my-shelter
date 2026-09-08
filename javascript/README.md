@@ -71,6 +71,33 @@ sanitizeFilename('../../etc/passwd'); // throws RangeError
 const safe = escapeHtml('<script>alert(1)</script>');
 ```
 
+### VersionedEncryptor (key rotation)
+
+```js
+const { VersionedEncryptor } = require('@kevinsorensen523/buddha-is-my-shelter');
+
+const ve = new VersionedEncryptor({ 1: keyV1 }, 1);
+const blob = ve.encrypt(Buffer.from('secret'));
+
+// later, after rotating in a new key:
+ve.addKey(2, keyV2);
+ve.setCurrentKeyId(2); // new encryptions use keyV2; old ciphertexts (keyId=1) still decrypt
+const plaintext = ve.decrypt(blob);
+```
+
+### SSRF guard
+
+```js
+const { isPublicHttpUrl } = require('@kevinsorensen523/buddha-is-my-shelter');
+
+await isPublicHttpUrl('https://example.com');    // true
+await isPublicHttpUrl('http://169.254.169.254/'); // false: resolves to link-local
+```
+
+Performs a real DNS lookup (async) — use `isValidUrl()` first for cheap
+structural checks, and this only right before making a server-side request
+to a caller-supplied URL. See the doc comment for the DNS-rebinding caveat.
+
 ### CsrfTokenManager
 
 ```js

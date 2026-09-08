@@ -72,6 +72,33 @@ $name = Validator::sanitizeFilename('report.pdf'); // throws on traversal
 $safe = Validator::escapeHtml('<script>alert(1)</script>');
 ```
 
+### VersionedEncryptor (key rotation)
+
+```php
+use SecureKit\VersionedEncryptor;
+
+$ve = new VersionedEncryptor([1 => $keyV1], 1);
+$blob = $ve->encrypt('secret');
+
+// later, after rotating in a new key:
+$ve->addKey(2, $keyV2);
+$ve->setCurrentKeyId(2); // new encryptions use keyV2; old ciphertexts (keyId=1) still decrypt
+$plaintext = $ve->decrypt($blob);
+```
+
+### SSRF guard
+
+```php
+use SecureKit\Ssrf;
+
+Ssrf::isPublicHttpUrl('https://example.com');    // true
+Ssrf::isPublicHttpUrl('http://169.254.169.254/'); // false: resolves to link-local
+```
+
+Performs a real DNS lookup — use `Validator::isValidUrl()` first for cheap
+structural checks, and this only right before making a server-side request
+to a caller-supplied URL. See the doc comment for the DNS-rebinding caveat.
+
 ### CsrfTokenManager
 
 ```php

@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `VersionedEncryptor` in all five languages — wraps `SymmetricEncryptor`
+  with a 1-byte key-ID prefix so encryption keys can be rotated without
+  losing the ability to decrypt data encrypted under a previous key.
+- SSRF guard (`isPublicHttpUrl`/`IsPublicHTTPURL`/`is_public_http_url`) in
+  all five languages — DNS-resolves a URL's hostname and rejects it if any
+  resolved address is private/loopback/link-local/reserved, specifically
+  blocking the common cloud-metadata SSRF target (169.254.169.254).
+  Documented DNS-rebinding/TOCTOU limitation in THREAT_MODEL.md.
+- `ROADMAP.md` — full backlog of planned modules and hardening work.
 - `vectors/` — cross-language interop test fixtures (password hashes, CSRF
   tokens, AEAD ciphertexts) generated from each language's own
   implementation, plus an interop test in every port that verifies it can
@@ -33,6 +42,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Java's `io.github.securekit` package) were intentionally left unchanged,
   since they're decoupled from the registry package name in every ecosystem
   except Go.
+
+### Added (publishing)
+
+- `.github/workflows/publish.yml` — automated PyPI and npm publish on
+  `python/vX.Y.Z` / `js/vX.Y.Z` tags (gated on `PYPI_API_TOKEN` /
+  `NPM_TOKEN` repo secrets).
+- `PUBLISHING.md` — honest per-registry status and exact setup steps.
+  Verified end-to-end that `go get github.com/kevinsorensen523/buddha-is-my-shelter/go@latest`
+  genuinely works today (no publish step needed); confirmed the Python
+  wheel and npm tarball both build and install correctly, pending each
+  registry's one-time account setup.
 
 ### Documented
 

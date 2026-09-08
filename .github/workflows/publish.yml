@@ -1,0 +1,64 @@
+name: Publish
+
+# Triggered by pushing a version tag, e.g.:
+#   git tag go/v0.1.0 && git push origin go/v0.1.0        (Go: informational only, see note below)
+#   git tag python/v0.1.0 && git push origin python/v0.1.0
+#   git tag js/v0.1.0 && git push origin js/v0.1.0
+#
+# Go needs no publish step -- `go get` resolves directly from this GitHub
+# repo via the module proxy, and already works once the repo is public.
+# Any git tag matching go.mod's version scheme makes `go get ...@v0.1.0`
+# resolve to that exact commit; without a tag, `@latest` still resolves to
+# the latest commit on the default branch (as a pseudo-version).
+#
+# PHP needs no publish step either, once the one-time Packagist submission
+# (see PUBLISHING.md) is done -- Packagist syncs itself from this repo via
+# a GitHub webhook on every push/tag.
+#
+# Maven Central is intentionally not automated here yet -- see
+# PUBLISHING.md for why it's a heavier, separate setup.
+
+on:
+  push:
+    tags:
+      - 'python/v*'
+      - 'js/v*'
+
+jobs:
+  publish-python:
+    if: startsWith(github.ref, 'refs/tags/python/v')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install build twine
+      - run: python -m build
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload dist/*
+
+  publish-js:
+    if: startsWith(github.ref, 'refs/tags/js/v')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: javascript
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install
+      - run: npm test
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

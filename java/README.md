@@ -80,6 +80,33 @@ String name = Validator.sanitizeFilename("report.pdf"); // throws on traversal
 String safe = Validator.escapeHtml("<script>alert(1)</script>");
 ```
 
+### VersionedEncryptor (key rotation)
+
+```java
+import io.github.securekit.VersionedEncryptor;
+
+VersionedEncryptor ve = new VersionedEncryptor(Map.of(1, keyV1), 1);
+byte[] blob = ve.encrypt("secret".getBytes(StandardCharsets.UTF_8), null);
+
+// later, after rotating in a new key:
+ve.addKey(2, keyV2);
+ve.setCurrentKeyId(2); // new encryptions use keyV2; old ciphertexts (keyId=1) still decrypt
+byte[] plaintext = ve.decrypt(blob, null);
+```
+
+### SSRF guard
+
+```java
+import io.github.securekit.Ssrf;
+
+Ssrf.isPublicHttpUrl("https://example.com");     // true
+Ssrf.isPublicHttpUrl("http://169.254.169.254/"); // false: resolves to link-local
+```
+
+Performs a real DNS lookup — use `Validator.isValidUrl()` first for cheap
+structural checks, and this only right before making a server-side request
+to a caller-supplied URL. See the Javadoc for the DNS-rebinding caveat.
+
 ### CsrfTokenManager
 
 ```java

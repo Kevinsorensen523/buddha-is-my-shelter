@@ -71,6 +71,20 @@ to all five language ports, which share the same design.
   construction (e.g. AES-256-GCM everywhere, since every language's crypto
   library already supports it) as a follow-up change.
 
+### VersionedEncryptor
+
+- **Protects against:** the "rotating a key breaks all old ciphertext"
+  problem — each ciphertext is tagged with a 1-byte key ID, so old and new
+  keys can coexist during and after a rotation.
+- **Does not protect against:** key storage/distribution (same caveat as
+  SymmetricEncryptor); an attacker who can call `addKey`/`setCurrentKeyId`
+  on your running instance (this is an in-process API, not a network
+  service — protect it the same way you'd protect any code path that
+  touches key material). Also does not automatically expire or forget old
+  keys — if you need to make old ciphertext permanently unrecoverable
+  (crypto-shredding for a right-to-erasure request), you must remove that
+  key ID from the key set yourself and ensure no other copy of it survives.
+
 ### InputValidator / Sanitizer
 
 - **Protects against:** malformed email/URL input reaching business logic;
@@ -87,6 +101,28 @@ to all five language ports, which share the same design.
   server-side). `sanitizeFilename` returns a bare filename only — callers
   must still join it with a trusted, fixed base directory, not a
   caller-supplied prefix.
+
+### SSRF Guard (`isPublicHttpUrl` / `IsPublicHTTPURL`)
+
+- **Protects against:** the single most common root cause of real SSRF
+  breaches — a server-side request to a caller-supplied URL landing on an
+  internal service or a cloud metadata endpoint (e.g. `169.254.169.254`,
+  the vector in the 2019 Capital One breach). Resolves DNS and rejects the
+  URL if any resolved address is loopback, private-use, link-local,
+  multicast, or otherwise reserved.
+- **Does not protect against — read this before relying on it in
+  production:** DNS rebinding / TOCTOU. This function checks the IP(s)
+  resolved *at the moment you call it*. If your actual HTTP request
+  happens afterward and re-resolves DNS itself (which almost every HTTP
+  client does), an attacker who controls the DNS answer for their domain
+  can return a public IP for your check and then a private IP for the real
+  request. **Full protection requires resolving once, validating with
+  `isPrivateOrReservedIp`, and forcing your HTTP client to connect to that
+  exact validated IP** — this guard is the validation primitive, not a
+  complete fetcher. A full SSRF-safe fetcher that closes this gap is
+  tracked in [ROADMAP.md](ROADMAP.md). Also does not follow or re-validate
+  redirects — if you allow redirects in your actual HTTP client, re-check
+  every redirect target with this same function before following it.
 
 ### CsrfTokenManager
 

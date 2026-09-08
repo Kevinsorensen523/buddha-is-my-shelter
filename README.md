@@ -33,10 +33,21 @@ toolkit's API surface is designed so those mistakes are difficult to make.
 | SecureRandom | ✅ | ✅ | ✅ | ✅ | ✅ |
 | PasswordHasher (Argon2id) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | SymmetricEncryptor (AEAD) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| VersionedEncryptor (key rotation) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | InputValidator / Sanitizer | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SSRF guard (`isPublicHttpUrl`) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | CsrfTokenManager | ✅ | ✅ | ✅ | ✅ | ✅ |
 | RateLimiter | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ConstantTimeCompare | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+See [ROADMAP.md](ROADMAP.md) for what's planned next (Redis-backed rate
+limiting, breached-password checks, login-attempt lockout, envelope
+encryption, and more).
+
+**Install status:** only Go's `go get` command actually works right now —
+verified end-to-end. PHP/Python/JS/Java install commands below are the
+intended target; see [PUBLISHING.md](PUBLISHING.md) for exact next steps
+and current status per registry.
 
 ## Vetted Cryptography per Language
 
