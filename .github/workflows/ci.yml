@@ -1,15 +1,27 @@
 name: CI
 
+# Runs on a self-hosted runner (the repo owner's own machine), not
+# GitHub-hosted runners -- see the comment block below for why, and the
+# critical security constraint that comes with it.
+#
+# SECURITY: pull_request is deliberately NOT a trigger here. A self-hosted
+# runner on a public repo that runs on pull_request would let anyone who
+# forks this repo submit a PR that executes arbitrary code on the repo
+# owner's own machine (GitHub explicitly warns about this). Restricting to
+# push (which only the repo owner, or anyone else with write access, can
+# do) closes that attack surface entirely. Do not add pull_request back
+# without also enabling "Require approval for all outside collaborators"
+# in Settings > Actions > General, and understanding that even with
+# approval, a self-hosted runner is still less isolated than GitHub's
+# ephemeral hosted runners.
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
   go:
     name: Go
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: go
@@ -29,7 +41,7 @@ jobs:
 
   php:
     name: PHP
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: php
@@ -46,7 +58,7 @@ jobs:
 
   python:
     name: Python
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: python
@@ -61,7 +73,7 @@ jobs:
 
   javascript:
     name: JavaScript
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: javascript
@@ -78,7 +90,7 @@ jobs:
 
   java:
     name: Java
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: java
