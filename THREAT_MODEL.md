@@ -55,6 +55,21 @@ to all five language ports, which share the same design.
   hardcode them. Also does not protect against a compromised endpoint that
   has the key and reads plaintext directly (encryption protects data, not a
   compromised process).
+- **Cross-language ciphertext portability — NOT guaranteed, unlike
+  PasswordHasher and CsrfTokenManager.** The five ports use three different
+  AEAD constructions (see root README's cryptography table), and this is
+  empirically verified by [`vectors/aead_ciphertexts.json`](vectors/aead_ciphertexts.json)
+  and each port's interop test: **Go and PHP** both use XChaCha20-Poly1305
+  (24-byte nonce) and can decrypt each other's ciphertext; **JavaScript and
+  Java** both use AES-256-GCM (12-byte nonce + 16-byte tag) and can decrypt
+  each other's ciphertext; **Python** uses plain ChaCha20-Poly1305 (12-byte
+  nonce) and cannot decrypt, or be decrypted by, any of the other four —
+  not even JavaScript/Java, despite producing a same-length blob, because
+  the underlying cipher differs. If your system encrypts in one language
+  and decrypts in another, confirm both are in the same compatibility
+  group before relying on this, or standardize all five ports on a single
+  construction (e.g. AES-256-GCM everywhere, since every language's crypto
+  library already supports it) as a follow-up change.
 
 ### InputValidator / Sanitizer
 

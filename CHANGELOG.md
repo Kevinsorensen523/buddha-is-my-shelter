@@ -9,6 +9,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `vectors/` — cross-language interop test fixtures (password hashes, CSRF
+  tokens, AEAD ciphertexts) generated from each language's own
+  implementation, plus an interop test in every port that verifies it can
+  consume what every other language produced.
+
+### Fixed
+
+- **Go**: `CsrfTokenManager` embedded its issue timestamp in nanoseconds
+  while PHP/Python/JavaScript/Java all use milliseconds. This didn't break
+  same-language round-trips, but silently broke cross-language token
+  verification for any positive TTL. Found by the new interop test suite.
+
+### Changed
+
+- Renamed all package/module identifiers from `securekit` to
+  `buddha-is-my-shelter` to match the repository name (go.mod, composer.json,
+  pyproject.toml, package.json, pom.xml, and every install command in the
+  READMEs). In-code namespaces/import identifiers (Go's `securekit` package
+  name, PHP's `SecureKit\` namespace, Python's `securekit` import package,
+  Java's `io.github.securekit` package) were intentionally left unchanged,
+  since they're decoupled from the registry package name in every ecosystem
+  except Go.
+
+### Documented
+
+- `SymmetricEncryptor` ciphertexts are **not** portable across all five
+  languages, unlike `PasswordHasher` and `CsrfTokenManager`. Three
+  compatibility islands exist: Go+PHP (XChaCha20-Poly1305), JS+Java
+  (AES-256-GCM), and Python alone (ChaCha20-Poly1305). See THREAT_MODEL.md.
+
 ## [0.1.0] - 2026-09-07
 
 ### Added

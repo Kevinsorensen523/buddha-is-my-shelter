@@ -52,6 +52,13 @@ No module ever exposes an API to choose your own nonce/IV — it is always
 generated internally per-call. No decryption error message ever reveals
 *why* decryption failed.
 
+**Note:** `PasswordHasher` and `CsrfTokenManager` produce a wire format
+that's portable across all five languages (verified by
+[`vectors/`](vectors/) — see below). `SymmetricEncryptor` is **not**
+fully portable: Go+PHP (XChaCha20-Poly1305), JS+Java (AES-256-GCM), and
+Python (ChaCha20-Poly1305) each form their own compatibility island. See
+[THREAT_MODEL.md](THREAT_MODEL.md#symmetricencryptor-aead) for detail.
+
 ## Architecture
 
 ```mermaid
@@ -185,6 +192,17 @@ buddha-is-my-shelter/
 ├── THREAT_MODEL.md what each module protects against, and what it doesn't
 └── .github/workflows/ci.yml   per-language test + security-lint matrix
 ```
+
+## Cross-Language Interop Testing
+
+[`vectors/`](vectors/) holds JSON fixtures — a hash, a token, a ciphertext —
+generated once by each language's own implementation. Every port has an
+interop test (`interop_test.go`, `InteropTest.php`, `test_interop.py`,
+`interop.test.js`, `InteropTest.java`) that loads these fixtures and asserts
+it can correctly consume what every *other* language produced. This is what
+actually proves the wire-format claims in this README, rather than just
+asserting them by hand — and it's exactly how the `SymmetricEncryptor`
+compatibility-island finding above was discovered.
 
 ## Documentation
 

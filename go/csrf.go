@@ -28,13 +28,15 @@ func NewCsrfTokenManager(secret []byte, ttl time.Duration) *CsrfTokenManager {
 }
 
 // Generate issues a new token bound to sessionID, encoding the issue time
-// and an HMAC tag. Format: base64url(issuedUnixNano || nonce || tag).
+// and an HMAC tag. Format: base64url(issuedUnixMilli || nonce || tag). Uses
+// milliseconds (not nanoseconds) to match the PHP/Python/JS/Java ports'
+// wire format exactly, so tokens are portable across languages.
 func (m *CsrfTokenManager) Generate(sessionID string) (string, error) {
 	nonce, err := SecureRandomBytes(16)
 	if err != nil {
 		return "", err
 	}
-	issuedAt := time.Now().UnixNano()
+	issuedAt := time.Now().UnixMilli()
 	payload := csrfPayload(sessionID, nonce, issuedAt)
 	tag := m.sign(payload)
 
@@ -54,7 +56,7 @@ func (m *CsrfTokenManager) Verify(sessionID, token string) bool {
 	nonce := raw[8:24]
 	tag := raw[24:56]
 
-	if m.ttl > 0 && time.Since(time.Unix(0, issuedAt)) > m.ttl {
+	if m.ttl > 0 && time.Since(time.UnixMilli(issuedAt)) > m.ttl {
 		return false
 	}
 	expected := m.sign(csrfPayload(sessionID, nonce, issuedAt))
