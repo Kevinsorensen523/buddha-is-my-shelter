@@ -145,10 +145,16 @@ ConstantTime.equals(a, b); // wraps MessageDigest.isEqual
 
 ## Framework Integration
 
-See [../examples/java](../examples/java) for a Spring Boot filter example
-wiring `CsrfTokenManager` and `RateLimiter` into the request pipeline.
-**Read [../examples/README.md](../examples/README.md) first** -- covers
-real deployment gotchas (multi-instance state, reverse-proxy trust) these
+See [../examples/java](../examples/java) for dedicated Spring Boot
+and Micronaut examples. **See
+[../examples/java/FRAMEWORKS.md](../examples/java/FRAMEWORKS.md)** for
+Jakarta EE, Quarkus, Helidon, and Play Framework -- note in particular
+that the Spring Boot example already implements the standard
+`jakarta.servlet.Filter` interface, so it works unmodified on any
+Jakarta EE server (Quarkus in servlet mode, Payara, WildFly, Tomcat,
+Jetty), not just Spring. **Read
+[../examples/README.md](../examples/README.md) first** -- covers real
+deployment gotchas (multi-instance state, reverse-proxy trust) these
 examples are subject to.
 
 ## Testing

@@ -1,5 +1,7 @@
 # Framework Integration Examples — Read This First
 
+**Java has its own compatibility index too**: [java/FRAMEWORKS.md](java/FRAMEWORKS.md) -- Spring Boot's example already implements the standard `jakarta.servlet.Filter` interface, so it works unmodified on any Jakarta EE server; Micronaut gets a dedicated example since it's reactive and skips the Servlet API entirely; Hibernate/MyBatis are noted as not applicable (ORM libraries, no request pipeline).
+
 **JS/TS frontend frameworks have their own compatibility index**: [js/FRAMEWORKS.md](js/FRAMEWORKS.md) covers React, Angular, Vue, Svelte, SolidJS, Preact, Next.js, Nuxt.js, SvelteKit, Remix, and Astro -- the short version is the same client/server split documented in the JS package's README, just mapped per framework.
 
 **PHP has its own compatibility index**: [php/FRAMEWORKS.md](php/FRAMEWORKS.md)

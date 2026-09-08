@@ -43,6 +43,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   since they're decoupled from the registry package name in every ecosystem
   except Go.
 
+### Added (Java framework coverage)
+
+- `examples/java/MicronautFilterExample.java` -- Micronaut's reactive
+  `HttpServerFilter`, needed because Micronaut deliberately skips the
+  Servlet API entirely (unlike Spring Boot).
+- `examples/java/FRAMEWORKS.md` -- notes that the existing Spring Boot
+  example already implements the standard `jakarta.servlet.Filter`
+  interface and therefore works unmodified on any Jakarta EE server
+  (Quarkus in servlet mode, Payara, WildFly, Tomcat, Jetty); covers
+  Quarkus/Helidon MP's JAX-RS `ContainerRequestFilter` path, Helidon SE's
+  reactive routing, and Play Framework's Akka-based `Filter`. Hibernate
+  and MyBatis are marked not applicable -- they're ORM/persistence
+  libraries with no request pipeline to hook into.
+
 ### Added (Node.js backend framework coverage)
 
 - `examples/js/fastifyExample.js`, `examples/js/koaExample.js`,
