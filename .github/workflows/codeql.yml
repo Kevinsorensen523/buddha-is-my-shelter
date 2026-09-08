@@ -4,10 +4,15 @@ name: CodeQL
 # CodeQL does not support PHP analysis (see php-review's phpstan job in
 # ci.yml for that language's static analysis instead).
 
+# SECURITY: pull_request is deliberately NOT a trigger here, same reasoning
+# as ci.yml -- this runs on a self-hosted runner (the repo owner's own
+# machine), and a self-hosted runner triggered by pull_request on a public
+# repo would let anyone who forks this repo run arbitrary code on that
+# machine via a PR. push and the weekly schedule only ever run code already
+# on the default branch, which only the repo owner (or anyone else with
+# write access) controls.
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
   schedule:
     - cron: '20 3 * * 2'  # weekly, Tuesday 03:20 UTC
@@ -18,7 +23,7 @@ permissions:
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       security-events: write
       packages: read
