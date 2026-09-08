@@ -1,5 +1,7 @@
 # Framework Integration Examples — Read This First
 
+**JS/TS frontend frameworks have their own compatibility index**: [js/FRAMEWORKS.md](js/FRAMEWORKS.md) covers React, Angular, Vue, Svelte, SolidJS, Preact, Next.js, Nuxt.js, SvelteKit, Remix, and Astro -- the short version is the same client/server split documented in the JS package's README, just mapped per framework.
+
 **PHP has its own compatibility index**: [php/FRAMEWORKS.md](php/FRAMEWORKS.md)
 sorts and categorizes ~80 PHP frameworks, pointing each actively-maintained
 one at the right example (dedicated Laravel/CodeIgniter/Symfony examples,

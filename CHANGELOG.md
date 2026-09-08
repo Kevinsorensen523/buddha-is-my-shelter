@@ -43,6 +43,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   since they're decoupled from the registry package name in every ecosystem
   except Go.
 
+### Added (Node.js backend framework coverage)
+
+- `examples/js/fastifyExample.js`, `examples/js/koaExample.js`,
+  `examples/js/nestjsExample.md` (NestJS uses a Guard, not raw middleware)
+  -- alongside the existing Express example. `examples/js/FRAMEWORKS.md`
+  extended with a backend-frameworks table (Hapi, AdonisJS, Feathers.js,
+  Restify, LoopBack, Sails.js, Meteor) noting these all run purely in
+  Node.js -- no browser/Edge split to worry about, just each framework's
+  own middleware/hook/guard shape.
+
+### Added (JS/TS frontend framework coverage)
+
+- `examples/js/FRAMEWORKS.md` -- compatibility index for React, Angular,
+  Vue.js, Svelte, SolidJS, Preact, Next.js, Nuxt.js, SvelteKit, Remix, and
+  Astro. Key point: pure client-side libraries (React/Vue/Svelte/SolidJS/
+  Preact/Angular without SSR) have no backend of their own and must pair
+  with a real server for anything security-sensitive, using only the
+  `/browser` export themselves; the five meta-frameworks split by
+  file/function the same way Next.js does (documented in
+  `nextjsExample.md`).
+
 ### Added (PHP framework coverage)
 
 - `examples/php/Psr15MiddlewareExample.php` -- generic PSR-15 middleware,

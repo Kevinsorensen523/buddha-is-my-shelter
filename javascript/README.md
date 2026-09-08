@@ -178,6 +178,8 @@ in a Next.js Edge Runtime route specifically, move that logic to a
 Node.js-runtime API route instead -- Edge Runtime isn't the right place
 for it regardless of this library.
 
+**Using this with React, Vue, Angular, Svelte, SolidJS, Preact, Nuxt, SvelteKit, Remix, or Astro?** See [../examples/js/FRAMEWORKS.md](../examples/js/FRAMEWORKS.md) for exactly which export to use where -- the short version: pure client-side libraries (React/Vue/Svelte/SolidJS/Preact/Angular without SSR) need a real backend and only ever use `/browser`; meta-frameworks (Next/Nuxt/SvelteKit/Remix/Astro) split by file, same as Next.js above.
+
 ## Framework Integration
 
 See [../examples/js](../examples/js) for an Express.js example wiring
