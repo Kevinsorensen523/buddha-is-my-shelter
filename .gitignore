@@ -1,6 +1,7 @@
 # Go
 go/*.test
 go/coverage.out
+examples/go/*/example-*
 
 # PHP
 php/vendor/

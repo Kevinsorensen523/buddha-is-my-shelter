@@ -43,6 +43,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   since they're decoupled from the registry package name in every ecosystem
   except Go.
 
+### Fixed (Go framework examples)
+
+- `examples/go/main.go`, `ginExample.go`, `echoExample.go`, and
+  `fiberExample.go` were all `package main` with their own `func main()`
+  in the same directory -- an actual compile conflict (Go doesn't allow
+  more than one `main()` per package), not just an IDE display issue, and
+  it also caused duplicate-declaration errors on shared helper names like
+  `isCsrfExempt`. Fixed by moving each into its own subdirectory
+  (`net-http/`, `gin/`, `echo/`, `fiber/`), each with its own `go.mod`.
+  Verified all four now actually `go build` and `go vet` clean against
+  live dependencies (previously only `gofmt`-checked for syntax, not
+  compiled) -- found via a user noticing IDE errors on the Echo example.
+
 ### Added (Go framework coverage)
 
 - `examples/go/ginExample.go`, `examples/go/echoExample.go`,
