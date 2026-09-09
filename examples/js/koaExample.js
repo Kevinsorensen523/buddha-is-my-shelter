@@ -27,7 +27,7 @@ const rateLimiter = new RateLimiter(new MemoryRateLimiterStore(), 60, 60000);
 app.use(async (ctx, next) => {
   // ctx.ip already respects `app.proxy` above -- see Koa's docs on
   // proxy header trust before enabling it blindly.
-  if (!rateLimiter.allow(ctx.ip)) {
+  if (!(await rateLimiter.allow(ctx.ip))) {
     ctx.status = 429;
     ctx.body = { error: 'too many requests' };
     return;

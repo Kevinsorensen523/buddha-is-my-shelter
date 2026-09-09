@@ -116,15 +116,36 @@ const ok = mgr.verify(sessionId, submittedToken);
 const { RateLimiter, MemoryRateLimiterStore } = require('@kevinsorensen523/buddha-is-my-shelter');
 
 const limiter = new RateLimiter(new MemoryRateLimiterStore(), 100, 60000);
-if (!limiter.allow(clientIp)) {
+if (!(await limiter.allow(clientIp))) {
   // reject: too many requests
 }
 ```
 
-`MemoryRateLimiterStore` is process-local only. Implement the
-`RateLimiterStore` interface against Redis for multi-instance deployments
-(e.g. behind a load balancer / PM2 cluster) — see
-[../THREAT_MODEL.md](../THREAT_MODEL.md).
+`allow()` is always async — even with the synchronous in-memory store,
+so the same call site works unchanged when you swap in a network-backed
+store below.
+
+`MemoryRateLimiterStore` is process-local only. For multi-instance
+deployments (behind a load balancer, PM2 cluster, container replicas),
+use `RedisRateLimiterStore` (requires the optional `ioredis` dependency,
+installed by default unless you pass `--no-optional`):
+
+```js
+const Redis = require('ioredis');
+const { RateLimiter, RedisRateLimiterStore } = require('@kevinsorensen523/buddha-is-my-shelter');
+
+const client = new Redis(process.env.REDIS_URL);
+const limiter = new RateLimiter(new RedisRateLimiterStore(client), 100, 60000);
+if (!(await limiter.allow(clientIp))) {
+  // reject: too many requests -- now shared correctly across every instance
+}
+```
+
+Uses an atomic Lua script (`INCR` + `PEXPIRE` in one round trip) so a
+crash between the two operations can't leave a key with no expiry. If
+Redis is unreachable, `RedisRateLimiterStore` fails closed (treats it as
+over-limit) rather than silently allowing unlimited requests through
+during an outage. See [../THREAT_MODEL.md](../THREAT_MODEL.md).
 
 ### constantTimeEqual
 

@@ -26,6 +26,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <bouncycastle.version>1.78.1</bouncycastle.version>
     <junit.version>5.10.2</junit.version>
+    <jedis.version>5.2.0</jedis.version>
   </properties>
 
   <dependencies>
@@ -33,6 +34,15 @@
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk18on</artifactId>
       <version>${bouncycastle.version}</version>
+    </dependency>
+    <!-- Optional: only needed if you use RedisRateLimiterStore. Marked
+         optional so consumers who don't need Redis support don't pull it
+         in transitively. -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>${jedis.version}</version>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

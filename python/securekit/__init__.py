@@ -16,6 +16,7 @@ from .validator import (
 )
 from .csrf import CsrfTokenManager
 from .rate_limiter import RateLimiter, MemoryRateLimiterStore, RateLimiterStore
+from .redis_rate_limiter_store import RedisRateLimiterStore
 from .constant_time import constant_time_equal
 from .ssrf import is_private_or_reserved_ip, is_public_http_url
 from .versioned_encryptor import VersionedEncryptor
@@ -36,6 +37,7 @@ __all__ = [
     "RateLimiter",
     "MemoryRateLimiterStore",
     "RateLimiterStore",
+    "RedisRateLimiterStore",
     "constant_time_equal",
     "is_private_or_reserved_ip",
     "is_public_http_url",

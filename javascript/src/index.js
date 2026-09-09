@@ -7,6 +7,7 @@ module.exports = {
   ...require('./validator'),
   ...require('./csrfTokenManager'),
   ...require('./rateLimiter'),
+  ...require('./redisRateLimiterStore'),
   ...require('./constantTime'),
   ...require('./ssrf'),
   ...require('./versionedEncryptor'),

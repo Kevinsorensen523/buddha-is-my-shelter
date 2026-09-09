@@ -39,7 +39,7 @@ toolkit's API surface is designed so those mistakes are difficult to make.
 | InputValidator / Sanitizer | ✅ | ✅ | ✅ | ✅ | ✅ |
 | SSRF guard (`isPublicHttpUrl`) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | CsrfTokenManager | ✅ | ✅ | ✅ | ✅ | ✅ |
-| RateLimiter | ✅ | ✅ | ✅ | ✅ | ✅ |
+| RateLimiter (+ Redis-backed store) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | ConstantTimeCompare | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 See [ROADMAP.md](ROADMAP.md) for what's planned next (Redis-backed rate

@@ -132,9 +132,27 @@ if (!limiter.allow(clientIp)) {
 }
 ```
 
-`MemoryRateLimiterStore` is process-local only. Implement `RateLimiterStore`
-against Redis for multi-instance deployments — see
-[../THREAT_MODEL.md](../THREAT_MODEL.md).
+`MemoryRateLimiterStore` is process-local only. For multi-instance
+deployments, use `RedisRateLimiterStore` (requires the optional
+`redis.clients:jedis` dependency):
+
+```java
+import io.github.securekit.RateLimiter;
+import io.github.securekit.RedisRateLimiterStore;
+import redis.clients.jedis.UnifiedJedis;
+
+UnifiedJedis jedis = new UnifiedJedis("redis://localhost:6379");
+RateLimiter limiter = new RateLimiter(new RedisRateLimiterStore(jedis), 100, 60_000L);
+if (!limiter.allow(clientIp)) {
+    // reject: too many requests -- now shared correctly across every instance
+}
+```
+
+Uses an atomic Lua script (`INCR` + `PEXPIRE` in one round trip) so a
+crash between the two operations can't leave a key with no expiry. If
+Redis is unreachable, `RedisRateLimiterStore` fails closed (treats it as
+over-limit) rather than silently allowing unlimited requests through
+during an outage. See [../THREAT_MODEL.md](../THREAT_MODEL.md).
 
 ### ConstantTime
 

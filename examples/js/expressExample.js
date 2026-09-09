@@ -31,16 +31,19 @@ app.set('trust proxy', 1); // example: exactly one trusted reverse proxy hop
 // would see inconsistent rate-limit counts, and (worse) a CSRF token
 // issued by one instance would fail verification on another unless
 // csrfSecret is shared. Fine for a single-process dev/small deployment;
-// swap MemoryRateLimiterStore for a Redis-backed store and load
-// csrfSecret from a shared secret manager before scaling out.
+// swap MemoryRateLimiterStore for RedisRateLimiterStore (ships with this
+// package -- see the JS README's RateLimiter section) and load csrfSecret
+// from a shared secret manager before scaling out. Note that
+// RateLimiter.allow() is always async specifically so it can support a
+// network-backed store like Redis, not just the synchronous in-memory one.
 const CSRF_EXEMPT_PATHS = ['/api/webhooks']; // third-party webhooks, bearer-token APIs, etc.
 
 const csrfSecret = secureRandomBytes(32);
 const csrf = new CsrfTokenManager(csrfSecret, 3600000);
 const rateLimiter = new RateLimiter(new MemoryRateLimiterStore(), 60, 60000);
 
-app.use((req, res, next) => {
-  if (!rateLimiter.allow(req.ip)) {
+app.use(async (req, res, next) => {
+  if (!(await rateLimiter.allow(req.ip))) {
     return res.status(429).json({ error: 'too many requests' });
   }
   return next();

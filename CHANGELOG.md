@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (Redis-backed rate limiting)
+
+- `RedisRateLimiterStore` in all five languages (Go, PHP via Predis,
+  Python via redis-py, JS via ioredis, Java via Jedis) -- the first
+  production-ready alternative to `MemoryRateLimiterStore` for
+  multi-instance deployments. Uses an atomic `INCR`+`PEXPIRE` Lua script
+  (one round trip, avoids a crash-between-the-two-calls race leaving a key
+  with no TTL) and fails closed (treats an unreachable Redis as
+  over-limit) rather than silently allowing unlimited requests through
+  during an outage. Verified against a real local Redis instance in every
+  language's test suite, not mocked.
+
+### Fixed (JS RateLimiter API)
+
+- **JavaScript's `RateLimiter.allow()` was fully synchronous**, which made
+  it impossible to implement a correct network-backed store like Redis at
+  all -- comparing a `Promise` to the limit with `<=` silently produces
+  the wrong answer every time rather than throwing, so this would have
+  shipped a broken Redis integration with no obvious symptom. `allow()` is
+  now always async (`Promise<boolean>`); `MemoryRateLimiterStore` is
+  unaffected since awaiting a non-Promise value resolves immediately. This
+  is a breaking change for any code calling `allow()` synchronously --
+  add `await`. Updated in every JS example (Express, Fastify, Koa,
+  NestJS) and the JS README.
+
 ### Added
 
 - `VersionedEncryptor` in all five languages — wraps `SymmetricEncryptor`

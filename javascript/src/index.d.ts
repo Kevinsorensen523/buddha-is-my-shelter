@@ -37,14 +37,18 @@ export class CsrfTokenManager {
 }
 
 export interface RateLimiterStore {
-  increment(key: string, windowMs: number): number;
+  increment(key: string, windowMs: number): number | Promise<number>;
 }
 export class MemoryRateLimiterStore implements RateLimiterStore {
   increment(key: string, windowMs: number): number;
 }
+export class RedisRateLimiterStore implements RateLimiterStore {
+  constructor(client: unknown, keyPrefix?: string);
+  increment(key: string, windowMs: number): Promise<number>;
+}
 export class RateLimiter {
   constructor(store: RateLimiterStore, limit: number, windowMs: number);
-  allow(key: string): boolean;
+  allow(key: string): Promise<boolean>;
 }
 
 export function constantTimeEqual(a: string | Buffer, b: string | Buffer): boolean;

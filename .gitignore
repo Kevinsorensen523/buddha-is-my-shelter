@@ -26,6 +26,9 @@ javascript/coverage/
 # Java
 java/target/
 
+# Redis (local test artifacts)
+dump.rdb
+
 # Editors / OS
 .DS_Store
 .vscode/

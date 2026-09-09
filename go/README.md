@@ -89,8 +89,24 @@ if !limiter.Allow(clientIP) {
 ```
 
 `MemoryStore` is process-local only. For multi-instance deployments,
-implement `RateLimiterStore` against Redis or similar shared storage (see
-[../THREAT_MODEL.md](../THREAT_MODEL.md)).
+use `RedisRateLimiterStore` (requires `github.com/redis/go-redis/v9`,
+already a dependency of this package):
+
+```go
+import "github.com/redis/go-redis/v9"
+
+client := redis.NewClient(&redis.Options{Addr: "localhost:6379"})
+limiter := securekit.NewRateLimiter(securekit.NewRedisRateLimiterStore(client), 100, time.Minute)
+if !limiter.Allow(clientIP) {
+    // reject: too many requests -- now shared correctly across every instance
+}
+```
+
+Uses an atomic Lua script (`INCR` + `PEXPIRE` in one round trip) so a
+crash between the two operations can't leave a key with no expiry. If
+Redis is unreachable, `RedisRateLimiterStore` fails closed (treats it as
+over-limit) rather than silently allowing unlimited requests through
+during an outage. See [../THREAT_MODEL.md](../THREAT_MODEL.md).
 
 ### VersionedEncryptor (key rotation)
 

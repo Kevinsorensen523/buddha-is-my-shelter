@@ -141,16 +141,19 @@ to all five language ports, which share the same design.
 - **Protects against:** brute-force and abuse of a single endpoint from a
   given key (IP, user ID, API key, etc.) within one process instance, using
   `MemoryRateLimiterStore`.
-- **Does not protect against — this is the most important caveat in this
-  document:** distributed abuse across multiple instances. The shipped
-  `MemoryRateLimiterStore` (Go: `MemoryStore`) is **process-local**. Behind
-  a load balancer or in any horizontally-scaled deployment, each instance
-  enforces its own independent limit, so the *effective* limit is
-  `configured_limit × instance_count`. For production multi-instance
-  deployments, implement the storage interface
-  (`RateLimiterStore`/`RateLimiterStoreInterface`) against Redis (e.g.
-  `INCR` + `EXPIRE`, or a Lua script for atomicity) or another shared,
-  low-latency store.
+- **Does not protect against, if you use the default store:**
+  distributed abuse across multiple instances. `MemoryRateLimiterStore`
+  (Go: `MemoryStore`) is **process-local**. Behind a load balancer or in
+  any horizontally-scaled deployment, each instance enforces its own
+  independent limit, so the *effective* limit is
+  `configured_limit × instance_count`. All five languages now ship a
+  **`RedisRateLimiterStore`** (requires an optional Redis client
+  dependency, already wired into each package's manifest) implementing
+  the atomic `INCR`+`PEXPIRE`-in-one-Lua-script pattern, verified against
+  a real Redis instance in every language's test suite — use it for any
+  multi-instance deployment. It fails closed (treats an unreachable Redis
+  as over-limit) rather than silently allowing unlimited requests through
+  during a Redis outage.
 - Also does not protect against attackers who can churn through many
   distinct keys (e.g. IP rotation) — pair with other abuse-detection
   signals for adversarial traffic.

@@ -118,9 +118,25 @@ if not limiter.allow(client_ip):
     ...  # reject: too many requests
 ```
 
-`MemoryRateLimiterStore` is process-local only. Implement the
-`RateLimiterStore` protocol against Redis for multi-instance deployments —
-see [../THREAT_MODEL.md](../THREAT_MODEL.md).
+`MemoryRateLimiterStore` is process-local only. For multi-instance
+deployments, use `RedisRateLimiterStore` (requires the optional `redis`
+extra: `pip install "buddha-is-my-shelter[redis]"`):
+
+```python
+import redis
+from securekit import RateLimiter, RedisRateLimiterStore
+
+client = redis.Redis(host="localhost", port=6379)
+limiter = RateLimiter(RedisRateLimiterStore(client), limit=100, window_seconds=60)
+if not limiter.allow(client_ip):
+    ...  # reject: too many requests -- now shared correctly across every worker
+```
+
+Uses an atomic Lua script (`INCR` + `PEXPIRE` in one round trip) so a
+crash between the two operations can't leave a key with no expiry. If
+Redis is unreachable, `RedisRateLimiterStore` fails closed (treats it as
+over-limit) rather than silently allowing unlimited requests through
+during an outage. See [../THREAT_MODEL.md](../THREAT_MODEL.md).
 
 ### constant_time_equal
 

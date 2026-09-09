@@ -43,9 +43,17 @@ incrementally across sessions. Status legend: ✅ done · 🚧 in progress ·
 - 📋 **Statistical constant-time proof** — a dudect-style timing harness
   that actually measures `ConstantTimeCompare` across many samples, rather
   than relying on "the stdlib function is documented as constant-time."
-- 📋 **Redis-backed `RateLimiterStore`** reference implementation per
-  language, for real multi-instance deployments (the shipped
-  `MemoryRateLimiterStore` is explicitly process-local only).
+- ✅ **Redis-backed `RateLimiterStore`** — `RedisRateLimiterStore` in all
+  five languages, using an atomic `INCR`+`PEXPIRE` Lua script (avoids a
+  crash-between-the-two-calls race leaving a key with no TTL), verified
+  against a real local Redis instance in every language's test suite
+  (not mocked). Fails closed (treats an unreachable Redis as over-limit)
+  rather than silently allowing unlimited requests during an outage.
+  Found and fixed a real API bug while building this: JS's
+  `RateLimiter.allow()` was fully synchronous, which made a correct
+  Redis-backed store impossible (comparing a Promise to the limit with
+  `<=` silently produces the wrong answer) -- `allow()` is now always
+  async there.
 - 📋 **Unify `SymmetricEncryptor`'s AEAD construction across all five
   languages** (documented gap: Go+PHP use XChaCha20-Poly1305, JS+Java use
   AES-256-GCM, Python uses plain ChaCha20-Poly1305 — three incompatible

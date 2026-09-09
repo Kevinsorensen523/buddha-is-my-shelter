@@ -23,7 +23,7 @@ const csrf = new CsrfTokenManager(csrfSecret, 3600000);
 const rateLimiter = new RateLimiter(new MemoryRateLimiterStore(), 60, 60000);
 
 fastify.addHook('onRequest', async (request, reply) => {
-  if (!rateLimiter.allow(request.ip)) {
+  if (!(await rateLimiter.allow(request.ip))) {
     reply.code(429).send({ error: 'too many requests' });
   }
 });

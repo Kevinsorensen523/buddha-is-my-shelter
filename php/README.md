@@ -124,10 +124,29 @@ if (!$limiter->allow($clientIp)) {
 }
 ```
 
-`MemoryRateLimiterStore` is process-local only (not safe across PHP-FPM
-workers/instances without shared storage). Implement
-`RateLimiterStoreInterface` against Redis for production. See
-[../THREAT_MODEL.md](../THREAT_MODEL.md).
+`MemoryRateLimiterStore` is process-local only -- and PHP-FPM specifically
+runs multiple worker processes with separate memory even on a single
+server, so this doesn't work at all in a typical PHP deployment, not just
+a multi-server one. Use `RedisRateLimiterStore` (requires `composer require predis/predis`,
+already a dependency of this package):
+
+```php
+use Predis\Client;
+use SecureKit\RateLimiter;
+use SecureKit\RedisRateLimiterStore;
+
+$redis = new Client(['host' => 'localhost', 'port' => 6379]);
+$limiter = new RateLimiter(new RedisRateLimiterStore($redis), 100, 60);
+if (!$limiter->allow($clientIp)) {
+    // reject: too many requests -- now shared correctly across every PHP-FPM worker
+}
+```
+
+Uses an atomic Lua script (`INCR` + `PEXPIRE` in one round trip) so a
+crash between the two operations can't leave a key with no expiry. If
+Redis is unreachable, `RedisRateLimiterStore` fails closed (treats it as
+over-limit) rather than silently allowing unlimited requests through
+during an outage. See [../THREAT_MODEL.md](../THREAT_MODEL.md).
 
 ### ConstantTime
 

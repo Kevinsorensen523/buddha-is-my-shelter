@@ -23,13 +23,16 @@ export class SecureKitGuard implements CanActivate {
     private readonly rateLimiter: RateLimiter,
   ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
     // request.ip respects Express/Fastify's own trust-proxy setting --
     // configure that at the adapter level (e.g. `app.set('trust proxy', 1)`
-    // for the Express adapter), not here.
-    if (!this.rateLimiter.allow(request.ip)) {
+    // for the Express adapter), not here. RateLimiter.allow() is always
+    // async (so it can support a network-backed store like Redis, not
+    // just the synchronous in-memory one), which is why canActivate is
+    // async here too -- Nest Guards support returning Promise<boolean>.
+    if (!(await this.rateLimiter.allow(request.ip))) {
       throw new HttpException('Too Many Requests', HttpStatus.TOO_MANY_REQUESTS);
     }
 
